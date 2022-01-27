@@ -1,5 +1,6 @@
 package com.chatapp.storage.data;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +19,6 @@ public class Conversation {
 	@OneToMany
 	private List<User> participants = new ArrayList<>();
 
-	@OneToMany(mappedBy = "id")
+	@OneToMany(mappedBy = "conversationId", fetch = FetchType.EAGER)
 	private List<Message> messages = new ArrayList<>();
 }

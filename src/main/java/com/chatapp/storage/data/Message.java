@@ -1,5 +1,6 @@
 package com.chatapp.storage.data;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,9 +21,7 @@ public class Message {
 	private String content;
 	private Date time;
 
-	@ManyToOne()
-	private User sender;
+	private Long senderId;
 
-	@ManyToOne
-	private Conversation conversation;
+	private Long conversationId;
 }

@@ -5,8 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Data
 @NoArgsConstructor
@@ -22,12 +24,6 @@ public class User {
 	private String email;
 	private String password;
 
-	@OneToMany(mappedBy = "id", fetch = FetchType.EAGER)
-	private List<FriendRequest> sentFriendRequests;
-
-	@OneToMany(mappedBy = "id", fetch = FetchType.EAGER)
-	private List<FriendRequest> receivedFriendRequests;
-
-	@ManyToMany
-	private List<User> friends;
+//	@ManyToMany(fetch = FetchType.EAGER)
+//	private List<User> friends = new ArrayList<>();
 }

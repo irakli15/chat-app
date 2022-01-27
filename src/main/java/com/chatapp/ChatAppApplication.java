@@ -53,29 +53,38 @@ public class ChatAppApplication {
 			FriendRequest firstToSecond = FriendRequest.builder().from(users.get(0)).to(users.get(1)).build();
 			friendRequestRepository.save(firstToSecond);
 
+//			users.get(0).getFriends().add(users.get(2));
+//			users.get(2).getFriends().add(users.get(0));
+//			userRepository.save(users.get(0));
+//			userRepository.save(users.get(2));
+
 			Conversation conversation = new Conversation();
 			conversation.getParticipants().add(users.get(0));
 			conversation.getParticipants().add(users.get(2));
+			conversation = conversationRepository.save(conversation);
 
 			conversation.getMessages().add(
 					Message.builder()
 							.content("message1")
-							.sender(users.get(0))
+							.senderId(users.get(0).getId())
 							.time(new Date())
+							.conversationId(conversation.getId())
 							.build());
 
 			conversation.getMessages().add(
 					Message.builder()
 							.content("message2")
-							.sender(users.get(2))
+							.senderId(users.get(2).getId())
 							.time(new Date())
+							.conversationId(conversation.getId())
 							.build());
 
 			conversation.getMessages().add(
 					Message.builder()
 							.content("message3")
-							.sender(users.get(0))
+							.senderId(users.get(0).getId())
 							.time(new Date())
+							.conversationId(conversation.getId())
 							.build());
 
 			messageRepository.saveAll(conversation.getMessages());
