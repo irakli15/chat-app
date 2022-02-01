@@ -6,7 +6,8 @@ import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "/user", produces = "application/json")
+@RequestMapping(path = "/api/user", produces = "application/json")
+@CrossOrigin
 @Log
 public class UserController {
 	private final UserRepository userRepository;

@@ -6,14 +6,13 @@ import com.chatapp.storage.repositories.ConversationRepository;
 import com.chatapp.storage.repositories.MessageRepository;
 import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "conversation")
-@EnableWebMvc
+@RequestMapping(path = "/api/conversation", produces = "application/json")
+@CrossOrigin
 @Log
 public class ConversationController {
 	private final ConversationRepository conversationRepository;
@@ -33,9 +32,9 @@ public class ConversationController {
 		return conversation;
 	}
 
-	@GetMapping("/byUser/{userId}")
-	public List<Conversation> getConversationByUserId(@PathVariable Long userId) {
-		return conversationRepository.findAllByParticipantId(userId);
+	@GetMapping("/byUser/{userName}")
+	public List<Conversation> getConversationByUserName(@PathVariable String userName) {
+		return conversationRepository.findAllByParticipantUserName(userName);
 	}
 
 	@PutMapping("/addMessage")
@@ -48,7 +47,7 @@ public class ConversationController {
 //						.senderId(Long.parseLong(senderUserId))
 //						.build();
 		message.setTime(new Date());
-		log.info("added message: " + message.toString());
+		log.info("added message: " + message);
 		messageRepository.save(message);
 	}
 

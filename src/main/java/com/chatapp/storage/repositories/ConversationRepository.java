@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface ConversationRepository extends JpaRepository<Conversation, Long> {
 
-	@Query("SELECT c FROM Conversation c WHERE :userId IN (SELECT p.id FROM c.participants p)")
-	List<Conversation> findAllByParticipantId(Long userId);
+	@Query("SELECT c from Conversation c WHERE " +
+			"(SELECT u.id FROM User u WHERE u.userName = :userName) " +
+			"IN (SELECT p.id FROM c.participants p)")
+	List<Conversation> findAllByParticipantUserName(String userName);
 }
