@@ -4,9 +4,6 @@ import ConversationCard from "./ConversationCard";
 import "./ConversationList.css";
 
 const ConversationList = (props) => {
-	const onCardClick = (data) => {
-		props.onConversationClick(data);
-	};
 	console.log(props.conversationsData);
 	const currentUserName = useContext(SessionContext).currentUserName;
 	return (
@@ -15,7 +12,6 @@ const ConversationList = (props) => {
 				return (
 					<ConversationCard
 						key={convData.id}
-						conversationId={convData.id}
 						participantUserName={
 							convData.participants.filter(
 								(user) => currentUserName !== user.userName
@@ -27,7 +23,7 @@ const ConversationList = (props) => {
 						lastMessageTime={
 							convData.messages[convData.messages.length - 1].time
 						}
-						cardClickHandler={onCardClick}
+						cardClickHandler={() => props.onConversationClick(convData.id)}
 					/>
 				);
 			})}
