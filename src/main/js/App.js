@@ -58,12 +58,12 @@ function App() {
 
 	return (
 		<SessionContext.Provider value={{ currentUserName: userName }}>
-			<div>
-				{userName && <button onClick={logOutHandler}>Log Out</button>}
+			<div style={{display: "flex", height:"100vh"}}>
+				{/*{userName && <button onClick={logOutHandler}>Log Out</button>}*/}
 
 				{!userName && <Login loginHandler={onLogIn} />}
 
-				{userName && conversationToShow === null && conversations !== null && (
+				{userName && conversations !== null && (
 				 	<ConversationList
 						conversationsData={conversations}
 						onConversationClick={conversationClickHandler}

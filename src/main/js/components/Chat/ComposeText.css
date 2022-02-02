@@ -1,15 +1,15 @@
 .compose-text {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: white;
-}
-
-.compose-text-wrapper {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    width: 20rem;
-    margin: 0.2rem auto;
+    flex: 0 0 auto;
     justify-content: center;
+    margin: 0.2rem;
+    border-top: solid 1px;
+    padding-top: 0.1rem;
+}
+
+.compose-text-field {
+    flex-grow: 1;
+    margin: 0.1rem;
 }

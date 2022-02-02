@@ -1,6 +1,7 @@
 .list-style {
-    max-width: 40rem;
-    width: 100%;
-    margin: 2rem auto;
+    max-width: 20rem;
+    margin: 0.2rem;
     overflow-y: auto;
+    border-right: solid 1px;
+    padding-right: 0.2rem;
 }

@@ -1,28 +1,24 @@
 .message-list-style {
-	max-width: 20rem;
-	margin: 2rem auto;
-	margin-top: 5rem;
-	margin-bottom: 5rem;
+	display: flex;
+	flex-direction: column;
+	margin: 0.2rem;
+	flex-grow: 1;
+	overflow: auto;
 }
 
 .conversation-header {
 	display: flex;
-	flex-direction: row;
+	align-content: center;
+	font-weight: bold;
 	flex-wrap: wrap;
-	position: fixed;
-	width: 100%;
+	flex: 0 0 auto;
 	height: 2rem;
-	background: white;
-	top: 0;
-	overflow: hidden;
+	background: lightgray;
+	border-bottom: solid 1px;
 }
 
-.conversee-title {
-	text-align: center;
-	margin: auto;
-    width: fit-content;
-}
-
-.back-button {
-	margin: 0.2rem;
+.messages-wrapper {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
 }

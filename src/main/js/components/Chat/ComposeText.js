@@ -14,12 +14,10 @@ const ComposeText = (props) => {
 	};
 
 	return (
-		<div className="compose-text">
-			<div className="compose-text-wrapper">
-				<textarea style={{margin: "0 10px"}} ref={messageTextRef}/>
+			<div className="compose-text">
+				<textarea className="compose-text-field" ref={messageTextRef}/>
 				<button onClick={onSendClick}>Send</button>
 			</div>
-		</div>
 	);
 };
 
