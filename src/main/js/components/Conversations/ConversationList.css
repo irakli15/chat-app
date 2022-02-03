@@ -1,7 +1,4 @@
 .list-style {
-    max-width: 20rem;
-    margin: 0.2rem;
     overflow-y: auto;
-    border-right: solid 1px;
-    padding-right: 0.2rem;
+    flex-grow: 1;
 }

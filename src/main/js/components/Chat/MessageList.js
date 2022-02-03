@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, {useContext, useEffect, useRef} from "react";
 import SessionContext from "../../context/session-context";
 import ChatCard from "./ChatCard";
 import ComposeText from "./ComposeText";
@@ -8,6 +8,13 @@ import "./Helper"
 
 const MessageList = (props) => {
 	const currentUserName = useContext(SessionContext).currentUserName;
+	const messagesEnd = useRef();
+
+	useEffect(()=> {
+		messagesEnd.current.scrollIntoView({behavior:"smooth"});
+	})
+
+
 	return (
 		<div className="messages-wrapper">
 			<div className="conversation-header">
@@ -29,10 +36,11 @@ const MessageList = (props) => {
 						/>
 					);
 				})}
+				<div ref={messagesEnd}/>
 			</div>
 			<ComposeText
 				sendMessageHandler={props.sendMessageHandler}
-				conversationId={props.conversation.id}
+				conversation={props.conversation}
 			/>
 		</div>
 	);

@@ -9,7 +9,12 @@ import java.util.List;
 public interface ConversationRepository extends JpaRepository<Conversation, Long> {
 
 	@Query("SELECT c from Conversation c WHERE " +
-			"(SELECT u.id FROM User u WHERE u.userName = :userName) " +
-			"IN (SELECT p.id FROM c.participants p)")
+			" EXISTS (SELECT 1 FROM c.participants p WHERE p.userName = :userName)")
 	List<Conversation> findAllByParticipantUserName(String userName);
+
+	@Query("SELECT c from Conversation c WHERE " +
+			"(SELECT u.id FROM User u WHERE u.userName = :currentUserName) " +
+			"IN (SELECT p.id FROM c.participants p) " +
+			"AND EXISTS (SELECT 1 FROM c.participants p WHERE p.userName <> :currentUserName AND p.userName LIKE %:searchTerm%)")
+	List<Conversation> searchAllByParticipantUserName(String currentUserName, String searchTerm);
 }

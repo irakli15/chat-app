@@ -8,19 +8,19 @@ const ConversationList = (props) => {
 	const currentUserName = useContext(SessionContext).currentUserName;
 	return (
 		<div className="list-style">
-			{props.conversationsData.map((convData) => {
+			{props.conversationsData.map((convData, index) => {
 				return (
 					<ConversationCard
-						key={convData.id}
+						key={index}
 						participantUserName={
 							convData.participants.filter(
 								(user) => currentUserName !== user.userName
 							)[0].userName
 						}
-						lastMessage={
+						lastMessage={ convData.messages.length === 0 ? "" :
 							convData.messages[convData.messages.length - 1].content
 						}
-						lastMessageTime={
+						lastMessageTime={convData.messages.length === 0 ? "" :
 							convData.messages[convData.messages.length - 1].time
 						}
 						cardClickHandler={() => props.onConversationClick(convData.id)}

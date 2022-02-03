@@ -5,6 +5,8 @@ import com.chatapp.storage.repositories.UserRepository;
 import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/api/user", produces = "application/json")
 @CrossOrigin

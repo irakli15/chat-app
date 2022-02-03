@@ -7,7 +7,7 @@ const ComposeText = (props) => {
 		if (messageTextRef.current.value.length > 0) {
 			props.sendMessageHandler({
 				content: messageTextRef.current.value,
-				conversationId: props.conversationId,
+				conversation: props.conversation,
 			});
 			messageTextRef.current.value = "";
 		}

@@ -1,24 +1,14 @@
-import ConversationList from "./components/Conversations/ConversationList";
 import React, { useEffect, useState } from "react";
 import MessageList from "./components/Chat/MessageList";
 import SessionContext from "./context/session-context";
 import Login from "./components/Login/Login";
+import Sidebar from "./components/Sidebar/Sidebar";
+import ConversationsClient from "./api/ConversationsClient";
 
-const retrieveConversations = (userName, setConversations) => {
-	if (userName) {
-		fetch("http://localhost:8080/api/conversation/byUser/" + userName)
-			.then((response) => {
-				return response.json();
-			})
-			.then((data) => {
-				setConversations(data);
-				localStorage.setItem("currentUserName", userName);
-			});
-	}
-};
 
 function App() {
 	const [conversationToShow, setConversationToShow] = useState(null);
+	const [searchTerm, setSearchTerm] = useState("");
 	const [userName, setUserName] = useState(
 		localStorage.getItem("currentUserName")
 	);
@@ -36,12 +26,12 @@ function App() {
 		setConversationToShow(null);
 	};
 
-	const sendMessage = (content) => {
-		console.log(content);
-	};
+	const sendMessageHandler = (dataForNewMessage) => {
+		ConversationsClient.sendMessage(dataForNewMessage, conversationToShow, setConversationToShow, userName);
+	}
 
 	useEffect(() => {
-		retrieveConversations(userName, setConversations);
+		ConversationsClient.retrieveConversations(userName, setConversations);
 	}, [userName]);
 
 	const onLogIn = (userName) => {
@@ -56,6 +46,14 @@ function App() {
 		setConversations(null);
 	};
 
+	const searchHandler = (event) => {
+		setSearchTerm(event.target.value);
+	}
+
+	useEffect(()=>{
+		ConversationsClient.searchConversations(userName, setConversations, searchTerm);
+	}, [searchTerm, userName]);
+
 	return (
 		<SessionContext.Provider value={{ currentUserName: userName }}>
 			<div style={{display: "flex", height:"100vh"}}>
@@ -64,8 +62,9 @@ function App() {
 				{!userName && <Login loginHandler={onLogIn} />}
 
 				{userName && conversations !== null && (
-				 	<ConversationList
+					<Sidebar
 						conversationsData={conversations}
+						onSearchChange = {searchHandler}
 						onConversationClick={conversationClickHandler}
 					/>
 				) }
@@ -73,7 +72,7 @@ function App() {
 					<MessageList
 						onGoBackClick={onGoBack}
 			 			conversation={conversationToShow}
-						sendMessageHandler={sendMessage}
+						sendMessageHandler={sendMessageHandler}
 					/>
 				)}
 			</div>
