@@ -1,5 +1,6 @@
 package com.chatapp.api;
 
+import com.chatapp.api.dto.ReceivedMessage;
 import com.chatapp.storage.data.Conversation;
 import com.chatapp.storage.data.Message;
 import com.chatapp.storage.data.User;
@@ -70,8 +71,8 @@ public class ConversationController {
 
 
 	@PutMapping("/addMessage")
-	public void addMessageToConversation(@RequestBody Wrapper wrapper) {
-		Message message = wrapper.getMessage();
+	public void addMessageToConversation(@RequestBody ReceivedMessage receivedMessage) {
+		Message message = receivedMessage.getMessage();
 		message.setTime(new Date());
 		messageRepository.save(message);
 	}

@@ -14,6 +14,15 @@ function App() {
 	);
 	const [conversations, setConversations] = useState([]);
 
+	useEffect(() => {
+		ConversationsClient.retrieveConversations(userName, setConversations);
+	}, [userName]);
+
+
+	useEffect(()=>{
+		ConversationsClient.searchConversations(userName, setConversations, searchTerm);
+	}, [searchTerm, userName]);
+
 	const conversationClickHandler = (conversationId) => {
 		setConversationToShow(
 			conversations.filter((conversation) => {
@@ -30,10 +39,6 @@ function App() {
 		ConversationsClient.sendMessage(dataForNewMessage, conversationToShow, setConversationToShow, userName);
 	}
 
-	useEffect(() => {
-		ConversationsClient.retrieveConversations(userName, setConversations);
-	}, [userName]);
-
 	const onLogIn = (userName) => {
 		if (userName) {
 			setUserName(userName);
@@ -49,10 +54,6 @@ function App() {
 	const searchHandler = (event) => {
 		setSearchTerm(event.target.value);
 	}
-
-	useEffect(()=>{
-		ConversationsClient.searchConversations(userName, setConversations, searchTerm);
-	}, [searchTerm, userName]);
 
 	return (
 		<SessionContext.Provider value={{ currentUserName: userName }}>
