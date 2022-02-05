@@ -1,12 +1,14 @@
 package com.chatapp.storage.data;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
 
 @Data
@@ -20,8 +22,6 @@ public class Message {
 	private Long id;
 	private String content;
 	private Date time;
-
 	private Long senderId;
-
 	private Long conversationId;
 }

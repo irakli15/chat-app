@@ -1,11 +1,9 @@
 package com.chatapp;
 
 import com.chatapp.storage.data.Conversation;
-import com.chatapp.storage.data.FriendRequest;
 import com.chatapp.storage.data.Message;
 import com.chatapp.storage.data.User;
 import com.chatapp.storage.repositories.ConversationRepository;
-import com.chatapp.storage.repositories.FriendRequestRepository;
 import com.chatapp.storage.repositories.MessageRepository;
 import com.chatapp.storage.repositories.UserRepository;
 import lombok.extern.java.Log;
@@ -30,8 +28,7 @@ public class ChatAppApplication {
 	@Profile("dev")
 	public CommandLineRunner dataLoader(UserRepository userRepository,
 										MessageRepository messageRepository,
-										ConversationRepository conversationRepository,
-										FriendRequestRepository friendRequestRepository) {
+										ConversationRepository conversationRepository) {
 		return args -> {
 			userRepository.save(
 					User.builder()
@@ -50,13 +47,6 @@ public class ChatAppApplication {
 							.build());
 
 			List<User> users = userRepository.findAll();
-			FriendRequest firstToSecond = FriendRequest.builder().from(users.get(0)).to(users.get(1)).build();
-			friendRequestRepository.save(firstToSecond);
-
-//			users.get(0).getFriends().add(users.get(2));
-//			users.get(2).getFriends().add(users.get(0));
-//			userRepository.save(users.get(0));
-//			userRepository.save(users.get(2));
 
 			Conversation conversation = new Conversation();
 			conversation.getParticipants().add(users.get(0));

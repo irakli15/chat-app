@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReceivedMessage {
+public class ReceivedMessageDTO {
 	Message message;
 	Conversation conversation;
 }

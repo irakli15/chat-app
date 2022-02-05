@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface ConversationRepository extends JpaRepository<Conversation, Long> {
+public interface ConversationRepository extends JpaRepository<Conversation, Long>, CustomConversationRepository {
 
 	@Query("SELECT c from Conversation c WHERE " +
 			" EXISTS (SELECT 1 FROM c.participants p WHERE p.userName = :userName)")

@@ -24,11 +24,7 @@ function App() {
 	}, [searchTerm, userName]);
 
 	const conversationClickHandler = (conversationId) => {
-		setConversationToShow(
-			conversations.filter((conversation) => {
-				return conversation.id === conversationId;
-			})[0]
-		);
+		ConversationsClient.retrieveFullConversation(conversationId, setConversationToShow);
 	};
 
 	const onGoBack = () => {

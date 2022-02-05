@@ -12,6 +12,17 @@ export default class ConversationsClient {
         }
     };
 
+    static retrieveFullConversation = (conversationId, setConversationToShow) => {
+        fetch("http://localhost:8080/api/conversation/getConversationById/" + conversationId)
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+                setConversationToShow(data);
+            });
+    };
+
     static searchConversations = (userName, setConversations, searchTerm) => {
         if (searchTerm && searchTerm.length > 0) {
             fetch("http://localhost:8080/api/conversation/searchConversations?" +

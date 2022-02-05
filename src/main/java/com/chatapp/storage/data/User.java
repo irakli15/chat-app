@@ -23,7 +23,4 @@ public class User {
 	private String fullName;
 	private String email;
 	private String password;
-
-//	@ManyToMany(fetch = FetchType.EAGER)
-//	private List<User> friends = new ArrayList<>();
 }

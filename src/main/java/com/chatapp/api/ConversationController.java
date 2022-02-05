@@ -1,6 +1,7 @@
 package com.chatapp.api;
 
-import com.chatapp.api.dto.ReceivedMessage;
+import com.chatapp.api.dto.ConversationDTO;
+import com.chatapp.api.dto.ReceivedMessageDTO;
 import com.chatapp.storage.data.Conversation;
 import com.chatapp.storage.data.Message;
 import com.chatapp.storage.data.User;
@@ -35,14 +36,21 @@ public class ConversationController {
 
 	@GetMapping("/getConversationById/{conversationId}")
 	public Conversation getConversation(@PathVariable Long conversationId) {
-		Conversation conversation = conversationRepository.findById(conversationId).get();
-		log.info(conversation.getMessages().get(0).toString());
-		return conversation;
+		return conversationRepository.getConversationWithMessages(conversationId);
 	}
 
 	@GetMapping("/byUser/{userName}")
-	public List<Conversation> getConversationByUserName(@PathVariable String userName) {
-		return conversationRepository.findAllByParticipantUserName(userName);
+	public List<ConversationDTO> getConversationByUserName(@PathVariable String userName) {
+		List<Conversation> allByParticipantUserName = conversationRepository.findAllByParticipantUserName(userName);
+		return allByParticipantUserName.stream().map(conversation -> {
+			Message message = conversation.getMessages().get(conversation.getMessages().size() - 1);
+			return new ConversationDTO(
+					conversation.getId(),
+					conversation.getParticipants(),
+					null,
+					message.getContent(),
+					message.getTime());
+		}).collect(Collectors.toList());
 	}
 
 
@@ -71,7 +79,7 @@ public class ConversationController {
 
 
 	@PutMapping("/addMessage")
-	public void addMessageToConversation(@RequestBody ReceivedMessage receivedMessage) {
+	public void addMessageToConversation(@RequestBody ReceivedMessageDTO receivedMessage) {
 		Message message = receivedMessage.getMessage();
 		message.setTime(new Date());
 		messageRepository.save(message);

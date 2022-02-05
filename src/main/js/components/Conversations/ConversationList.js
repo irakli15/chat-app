@@ -17,12 +17,8 @@ const ConversationList = (props) => {
 								(user) => currentUserName !== user.userName
 							)[0].userName
 						}
-						lastMessage={ convData.messages.length === 0 ? "" :
-							convData.messages[convData.messages.length - 1].content
-						}
-						lastMessageTime={convData.messages.length === 0 ? "" :
-							convData.messages[convData.messages.length - 1].time
-						}
+						lastMessage={ convData.lastMessage }
+						lastMessageTime={ convData.lastMessageTime }
 						cardClickHandler={() => props.onConversationClick(convData.id)}
 					/>
 				);
