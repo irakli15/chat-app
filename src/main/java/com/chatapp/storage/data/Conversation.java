@@ -15,7 +15,7 @@ public class Conversation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
 	private List<User> participants = new ArrayList<>();
 
 	@OneToMany(mappedBy = "conversationId", fetch = FetchType.LAZY)

@@ -11,6 +11,7 @@ import com.chatapp.storage.repositories.UserRepository;
 import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -42,33 +43,26 @@ public class ConversationController {
 	@GetMapping("/byUser/{userName}")
 	public List<ConversationDTO> getConversationByUserName(@PathVariable String userName) {
 		List<Conversation> allByParticipantUserName = conversationRepository.findAllByParticipantUserName(userName);
-		return allByParticipantUserName.stream().map(conversation -> {
-			Message message = conversation.getMessages().get(conversation.getMessages().size() - 1);
-			return new ConversationDTO(
-					conversation.getId(),
-					conversation.getParticipants(),
-					null,
-					message.getContent(),
-					message.getTime());
-		}).collect(Collectors.toList());
+		return allByParticipantUserName.stream().map(this::getConversationDTO).collect(Collectors.toList());
 	}
 
-
 	@GetMapping("/searchConversations")
-	public List<Conversation> searchConversations(@RequestParam String userName,
-												  @RequestParam String searchTerm) {
+	public List<ConversationDTO> searchConversations(@RequestParam String userName,
+													 @RequestParam String searchTerm) {
 		User currentUser = userRepository.getByUserName(userName);
-		List<Conversation> conversations = conversationRepository.searchAllByParticipantUserName(userName, searchTerm);
+		List<ConversationDTO> conversations =
+				conversationRepository.searchAllByParticipantUserName(userName, searchTerm)
+				.stream().map(this::getConversationDTO).collect(Collectors.toList());
 		Set<Long> allParticipants =
 				conversations.stream()
-						.map(Conversation::getParticipants)
+						.map(ConversationDTO::getParticipants)
 						.flatMap(List::stream)
 						.map(User::getId)
 						.collect(Collectors.toSet());
 		allParticipants.add(currentUser.getId());
 		List<User> notContactedUsers = userRepository.findNotContactedUsers(allParticipants, searchTerm);
 		conversations.addAll(notContactedUsers.stream().map(user -> {
-			Conversation conversation = new Conversation();
+			ConversationDTO conversation = new ConversationDTO();
 			conversation.getParticipants().add(currentUser);
 			conversation.getParticipants().add(user);
 			return conversation;
@@ -79,10 +73,29 @@ public class ConversationController {
 
 
 	@PutMapping("/addMessage")
-	public void addMessageToConversation(@RequestBody ReceivedMessageDTO receivedMessage) {
+	public Long addMessageToConversation(@RequestBody ReceivedMessageDTO receivedMessage) {
 		Message message = receivedMessage.getMessage();
+		Long conversationId = receivedMessage.getMessage().getConversationId();
 		message.setTime(new Date());
+		if (conversationId == null) {
+			receivedMessage.getConversation().setMessages(new ArrayList<>());
+			Conversation savedConversation = conversationRepository.save(receivedMessage.getConversation());
+			message.setConversationId(savedConversation.getId());
+			conversationId = savedConversation.getId();
+		}
 		messageRepository.save(message);
+		return conversationId;
 	}
+
+	private ConversationDTO getConversationDTO(Conversation conversation) {
+		Message message = conversation.getMessages().get(conversation.getMessages().size() - 1);
+		return new ConversationDTO(
+				conversation.getId(),
+				conversation.getParticipants(),
+				null,
+				message.getContent(),
+				message.getTime());
+	}
+
 
 }

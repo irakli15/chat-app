@@ -14,17 +14,16 @@ function App() {
 	);
 	const [conversations, setConversations] = useState([]);
 
-	useEffect(() => {
-		ConversationsClient.retrieveConversations(userName, setConversations);
-	}, [userName]);
-
-
 	useEffect(()=>{
 		ConversationsClient.searchConversations(userName, setConversations, searchTerm);
 	}, [searchTerm, userName]);
 
-	const conversationClickHandler = (conversationId) => {
-		ConversationsClient.retrieveFullConversation(conversationId, setConversationToShow);
+	const conversationClickHandler = (conversation) => {
+		if (conversation.id) {
+			ConversationsClient.retrieveFullConversation(conversation.id, setConversationToShow);
+		} else {
+			setConversationToShow(conversation);
+		}
 	};
 
 	const onGoBack = () => {
@@ -32,7 +31,12 @@ function App() {
 	};
 
 	const sendMessageHandler = (dataForNewMessage) => {
-		ConversationsClient.sendMessage(dataForNewMessage, conversationToShow, setConversationToShow, userName);
+		ConversationsClient.sendMessage(
+			dataForNewMessage,
+			conversationToShow,
+			setConversationToShow,
+			userName,
+			setConversations);
 	}
 
 	const onLogIn = (userName) => {

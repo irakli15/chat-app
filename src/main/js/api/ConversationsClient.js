@@ -18,7 +18,6 @@ export default class ConversationsClient {
                 return response.json();
             })
             .then((data) => {
-                console.log(data);
                 setConversationToShow(data);
             });
     };
@@ -39,7 +38,7 @@ export default class ConversationsClient {
         }
     };
 
-    static sendMessage = (sendMessageData, conversationToShow, setConversationToShow, userName) => {
+    static sendMessage = (sendMessageData, conversationToShow, setConversationToShow, userName, setConversations) => {
         const message = {
             id: null,
             content: sendMessageData.content,
@@ -59,8 +58,14 @@ export default class ConversationsClient {
             body: JSON.stringify(dataToSend)
 
         })
-            .then((response) => {
-                fetch("http://localhost:8080/api/conversation/getConversationById/" + conversationToShow.id)
+            .then((response) => response.json())
+            .then((conversationIdInResponse) => {
+                if (!conversationToShow.id) {
+                    this.retrieveConversations(userName, setConversations);
+                }
+                let conversationId = conversationIdInResponse === null ? conversationToShow.id : conversationIdInResponse;
+                console.log(conversationId);
+                fetch("http://localhost:8080/api/conversation/getConversationById/" + conversationId)
                     .then((response) => {
                         return response.json();
                     })

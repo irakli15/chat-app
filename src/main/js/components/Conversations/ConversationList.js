@@ -19,7 +19,7 @@ const ConversationList = (props) => {
 						}
 						lastMessage={ convData.lastMessage }
 						lastMessageTime={ convData.lastMessageTime }
-						cardClickHandler={() => props.onConversationClick(convData.id)}
+						cardClickHandler={() => props.onConversationClick(convData)}
 					/>
 				);
 			})}
