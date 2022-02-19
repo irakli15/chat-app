@@ -13,7 +13,6 @@ General strategies and technologies that will be used:
 
 Rough development path:
 - Start out with basic REST backend
-- Migrate backend to SpringWebflux and reactive RESTful
 - Write simple front-end between these two steps, shouldn't neet changing between them.
 - Turn backend into a microservice and containerize it, use messaging 
   to sync data between instances (all of them will have the same data for now).
