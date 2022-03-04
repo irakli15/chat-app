@@ -1,0 +1,10 @@
+.registration-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 20rem;
+    margin: auto;
+}
+
+.registration-form p {
+    margin: 0.1rem
+}

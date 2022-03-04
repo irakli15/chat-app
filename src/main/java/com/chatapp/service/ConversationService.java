@@ -2,6 +2,7 @@ package com.chatapp.service;
 
 import com.chatapp.api.dto.ConversationDTO;
 import com.chatapp.api.dto.ReceivedMessageDTO;
+import com.chatapp.api.dto.UserDTO;
 import com.chatapp.storage.data.Conversation;
 import com.chatapp.storage.data.Message;
 import com.chatapp.storage.data.User;
@@ -48,7 +49,7 @@ public class ConversationService {
 
 		return ConversationDTO.builder()
 				.id(conversation.getId())
-				.participants(conversation.getParticipants())
+				.participants(UserDTO.toDTOs(conversation.getParticipants()))
 				.messages(conversation.getMessages())
 				.lastMessage(lastMessage)
 				.lastMessageTime(lastMessageTime)
@@ -61,7 +62,7 @@ public class ConversationService {
 	}
 
 	public List<ConversationDTO> searchOldAndNewConversations(String userName, String searchTerm) {
-		User currentUser = userRepository.getByUserName(userName);
+		UserDTO currentUser = UserDTO.toDTO(userRepository.getByUserName(userName));
 		List<ConversationDTO> conversations =
 				conversationRepository.searchAllByParticipantUserName(userName, searchTerm)
 						.stream().map(this::getConversationDTO).collect(Collectors.toList());
@@ -69,14 +70,14 @@ public class ConversationService {
 				conversations.stream()
 						.map(ConversationDTO::getParticipants)
 						.flatMap(List::stream)
-						.map(User::getId)
+						.map(UserDTO::getId)
 						.collect(Collectors.toSet());
 		allParticipants.add(currentUser.getId());
 		List<User> notContactedUsers = userRepository.findNotContactedUsers(allParticipants, searchTerm);
 		conversations.addAll(notContactedUsers.stream().map(user -> {
 			ConversationDTO conversation = new ConversationDTO();
 			conversation.getParticipants().add(currentUser);
-			conversation.getParticipants().add(user);
+			conversation.getParticipants().add(UserDTO.toDTO(user));
 			return conversation;
 		}).collect(Collectors.toList()));
 		return conversations;
@@ -100,7 +101,7 @@ public class ConversationService {
 		Message message = conversation.getMessages().get(conversation.getMessages().size() - 1);
 		return new ConversationDTO(
 				conversation.getId(),
-				conversation.getParticipants(),
+				UserDTO.toDTOs(conversation.getParticipants()),
 				null,
 				message.getContent(),
 				message.getTime());

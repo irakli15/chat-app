@@ -19,7 +19,7 @@ public class ConversationDTO {
 
 	private Long id;
 
-	private List<User> participants = new ArrayList<>();
+	private List<UserDTO> participants = new ArrayList<>();
 
 	private List<Message> messages = new ArrayList<>();
 

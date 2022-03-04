@@ -1,8 +1,10 @@
 package com.chatapp.api;
 
+import com.chatapp.api.dto.UserDTO;
 import com.chatapp.storage.data.User;
 import com.chatapp.storage.repositories.UserRepository;
 import lombok.extern.java.Log;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,7 +19,12 @@ public class UserController {
 	}
 
 	@GetMapping("/{userId}")
-	public User getUser(@PathVariable Long userId) {
-		return userRepository.findById(userId).get();
+	public UserDTO getUser(@PathVariable Long userId) {
+		return UserDTO.toDTO(userRepository.findById(userId).get());
+	}
+
+	@GetMapping("/currentUser")
+	public UserDTO getCurrentUser(@AuthenticationPrincipal User user) {
+		return UserDTO.toDTO(user);
 	}
 }

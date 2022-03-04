@@ -12,6 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Date;
 import java.util.List;
@@ -30,20 +31,24 @@ public class ChatAppApplication {
 										MessageRepository messageRepository,
 										ConversationRepository conversationRepository) {
 		return args -> {
+			BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 			userRepository.save(
 					User.builder()
 							.userName("user1")
 							.fullName("user full name 1")
+							.password(bCryptPasswordEncoder.encode("user1"))
 							.build());
 			userRepository.save(
 					User.builder()
 							.userName("user2")
 							.fullName("user full name 2")
+							.password(bCryptPasswordEncoder.encode("user2"))
 							.build());
 			userRepository.save(
 					User.builder()
 							.userName("user3")
 							.fullName("user full name 3")
+							.password(bCryptPasswordEncoder.encode("user3"))
 							.build());
 
 			List<User> users = userRepository.findAll();

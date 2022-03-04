@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="registrationForm.css"/>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+<form class="registration-form" method="POST" th:action="@{/register}" id="registerForm">
+    <label for="userName">Username: </label>
+    <input type="text" name="userName" required/><br/>
+    <label for="password">Password: </label>
+    <input type="password" name="password" required/><br/>
+    <label for="confirm">Confirm password: </label>
+    <input type="password" name="confirm" required/><br/>
+    <label for="fullName">Full name: </label>
+    <input type="text" name="fullName"/><br/>
+    <input type="submit" value="Register"/>
+</form>
+</body>
+</html>

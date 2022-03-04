@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import MessageList from "./components/Chat/MessageList";
 import SessionContext from "./context/session-context";
-import Login from "./components/Login/Login";
 import Sidebar from "./components/Sidebar/Sidebar";
 import ConversationsClient from "./api/ConversationsClient";
+import TopBar from "./components/TopBar/TopBar";
 
 
 function App() {
@@ -13,6 +13,12 @@ function App() {
 		localStorage.getItem("currentUserName")
 	);
 	const [conversations, setConversations] = useState([]);
+
+	useEffect(() => {
+		if (!userName) {
+			ConversationsClient.getCurrentUser(setUserName);
+		}
+	}, []);
 
 	useEffect(()=>{
 		ConversationsClient.searchConversations(userName, setConversations, searchTerm);
@@ -39,16 +45,15 @@ function App() {
 			setConversations);
 	}
 
-	const onLogIn = (userName) => {
-		if (userName) {
-			setUserName(userName);
-		}
-	};
-
 	const logOutHandler = () => {
 		setUserName(null);
 		localStorage.removeItem("currentUserName");
 		setConversations(null);
+		//make call to log out
+		fetch("http://localhost:8080/logout", {method: "POST"})
+			.then(()=>{
+				})
+
 	};
 
 	const searchHandler = (event) => {
@@ -57,11 +62,9 @@ function App() {
 
 	return (
 		<SessionContext.Provider value={{ currentUserName: userName }}>
+			{userName && conversations !== null && (<TopBar onLogout={logOutHandler} userName={userName}/>)}
+
 			<div style={{display: "flex", height:"100vh"}}>
-				{/*{userName && <button onClick={logOutHandler}>Log Out</button>}*/}
-
-				{!userName && <Login loginHandler={onLogIn} />}
-
 				{userName && conversations !== null && (
 					<Sidebar
 						conversationsData={conversations}

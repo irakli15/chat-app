@@ -74,4 +74,13 @@ export default class ConversationsClient {
                     });
             })
     }
+
+    static getCurrentUser = (setUserName) => {
+        fetch("http://localhost:8080/api/user/currentUser")
+            .then((response) => {
+                return response.json();
+            }).then((data) => {
+                setUserName(data.userName);
+        })
+    }
 }
