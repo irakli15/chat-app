@@ -1,44 +1,36 @@
 export default class ConversationsClient {
-    static retrieveConversations = (userName, setConversations) => {
+    static retrieveConversations = async (userName, setConversations) => {
         if (userName) {
-            fetch("http://localhost:8080/api/conversation/byUser/" + userName)
-                .then((response) => {
-                    return response.json();
-                })
-                .then((data) => {
-                    setConversations(data);
-                    localStorage.setItem("currentUserName", userName);
-                });
+            const response = await fetch("http://localhost:8080/api/conversation/byUser/" + userName);
+            const data = await response.json();
+            setConversations(data);
+            localStorage.setItem("currentUserName", userName);
         }
     };
 
-    static retrieveFullConversation = (conversationId, setConversationToShow) => {
-        fetch("http://localhost:8080/api/conversation/getConversationById/" + conversationId)
-            .then((response) => {
-                return response.json();
-            })
-            .then((data) => {
-                setConversationToShow(data);
-            });
+    static retrieveFullConversation = async (conversationId, setConversationToShow) => {
+        const response = await fetch("http://localhost:8080/api/conversation/getConversationById/" + conversationId)
+        const data = await response.json();
+        setConversationToShow(data);
     };
 
-    static searchConversations = (userName, setConversations, searchTerm) => {
+    static searchConversations = async (userName, setConversations, searchTerm) => {
         if (searchTerm && searchTerm.length > 0) {
-            fetch("http://localhost:8080/api/conversation/searchConversations?" +
-                new URLSearchParams({userName: userName, searchTerm: searchTerm}))
-                .then((response) => {
-                    return response.json();
-                })
-                .then((data) => {
-                    setConversations(data);
-                    localStorage.setItem("currentUserName", userName);
-                });
+            const response = await fetch("http://localhost:8080/api/conversation/searchConversations?" +
+                new URLSearchParams({userName: userName, searchTerm: searchTerm}));
+            const data = await response.json();
+            setConversations(data);
+            localStorage.setItem("currentUserName", userName);
         } else {
-            ConversationsClient.retrieveConversations(userName, setConversations);
+            await ConversationsClient.retrieveConversations(userName, setConversations);
         }
     };
 
-    static sendMessage = (sendMessageData, conversationToShow, setConversationToShow, userName, setConversations) => {
+    static sendMessage = async (sendMessageData,
+                                conversationToShow,
+                                setConversationToShow,
+                                userName,
+                                setConversations) => {
         const message = {
             id: null,
             content: sendMessageData.content,
@@ -52,35 +44,24 @@ export default class ConversationsClient {
             conversation: message.conversationId === null ? sendMessageData.conversation : null
         }
 
-        fetch("http://localhost:8080/api/conversation/addMessage", {
+        const response = await fetch("http://localhost:8080/api/conversation/addMessage", {
             method: "PUT",
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(dataToSend)
 
-        })
-            .then((response) => response.json())
-            .then((conversationIdInResponse) => {
-                if (!conversationToShow.id) {
-                    this.retrieveConversations(userName, setConversations);
-                }
-                let conversationId = conversationIdInResponse === null ? conversationToShow.id : conversationIdInResponse;
-                console.log(conversationId);
-                fetch("http://localhost:8080/api/conversation/getConversationById/" + conversationId)
-                    .then((response) => {
-                        return response.json();
-                    })
-                    .then((data) => {
-                        setConversationToShow(data);
-                    });
-            })
+        });
+        const conversationIdInResponse = await response.json();
+        if (!conversationToShow.id) {
+            await this.retrieveConversations(userName, setConversations);
+        }
+        let conversationId = conversationIdInResponse === null ? conversationToShow.id : conversationIdInResponse;
+        console.log(conversationId);
+        await ConversationsClient.retrieveFullConversation(conversationId, setConversationToShow);
     }
 
-    static getCurrentUser = (setUserName) => {
-        fetch("http://localhost:8080/api/user/currentUser")
-            .then((response) => {
-                return response.json();
-            }).then((data) => {
-                setUserName(data.userName);
-        })
+    static getCurrentUser = async (setUserName) => {
+        const response = await fetch("http://localhost:8080/api/user/currentUser");
+        const data = await response.json();
+        setUserName(data.userName);
     }
 }

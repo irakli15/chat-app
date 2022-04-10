@@ -1,7 +1,7 @@
 var path = require('path');
 
 module.exports = {
-    entry: './src/main/js/index.js',
+    entry: ['./src/main/js/index.js', "regenerator-runtime/runtime.js"],
     devtool: 'source-map',
     cache: true,
     mode: 'development',
@@ -19,7 +19,10 @@ module.exports = {
                 use: [{
                     loader: 'babel-loader',
                     options: {
-                        presets: ["@babel/preset-env", "@babel/preset-react"]
+                        presets: ["@babel/preset-env", "@babel/preset-react"],
+                        plugins: [
+                                ["@babel/plugin-transform-runtime"]
+                            ]
                     }
                 }]
             },
