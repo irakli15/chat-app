@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	List<User> findNotContactedUsers(Set<Long> allParticipants, String searchTerm);
 
 	@Query("SELECT u FROM User u WHERE u.userName = :userName")
-	User getByUserName(String userName);
+	User findByUserName(String userName);
 
 	boolean existsByUserName(String userName);
 }

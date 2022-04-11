@@ -62,7 +62,7 @@ public class ConversationService {
 	}
 
 	public List<ConversationDTO> searchOldAndNewConversations(String userName, String searchTerm) {
-		UserDTO currentUser = UserDTO.toDTO(userRepository.getByUserName(userName));
+		UserDTO currentUser = UserDTO.toDTO(userRepository.findByUserName(userName));
 		List<ConversationDTO> conversations =
 				conversationRepository.searchAllByParticipantUserName(userName, searchTerm)
 						.stream().map(this::getConversationDTO).collect(Collectors.toList());

@@ -1,7 +1,12 @@
 export default class ConversationsClient {
+    static getAuthHeader = () => {
+        return {"Authorization": "Bearer " + localStorage.getItem("jwtToken")};
+    }
+
     static retrieveConversations = async (userName, setConversations) => {
         if (userName) {
-            const response = await fetch("http://localhost:8080/api/conversation/byUser/" + userName);
+            const response = await fetch("http://localhost:8080/api/conversation/getAll/",
+                {headers: ConversationsClient.getAuthHeader()});
             const data = await response.json();
             setConversations(data);
             localStorage.setItem("currentUserName", userName);
@@ -9,7 +14,8 @@ export default class ConversationsClient {
     };
 
     static retrieveFullConversation = async (conversationId, setConversationToShow) => {
-        const response = await fetch("http://localhost:8080/api/conversation/getConversationById/" + conversationId)
+        const response = await fetch("http://localhost:8080/api/conversation/getConversationById/" + conversationId,
+            {headers: ConversationsClient.getAuthHeader()})
         const data = await response.json();
         setConversationToShow(data);
     };
@@ -17,7 +23,8 @@ export default class ConversationsClient {
     static searchConversations = async (userName, setConversations, searchTerm) => {
         if (searchTerm && searchTerm.length > 0) {
             const response = await fetch("http://localhost:8080/api/conversation/searchConversations?" +
-                new URLSearchParams({userName: userName, searchTerm: searchTerm}));
+                new URLSearchParams({userName: userName, searchTerm: searchTerm}),
+                {headers: ConversationsClient.getAuthHeader()});
             const data = await response.json();
             setConversations(data);
             localStorage.setItem("currentUserName", userName);
@@ -46,7 +53,7 @@ export default class ConversationsClient {
 
         const response = await fetch("http://localhost:8080/api/conversation/addMessage", {
             method: "PUT",
-            headers: {'Content-Type': 'application/json'},
+            headers: {'Content-Type': 'application/json', ...ConversationsClient.getAuthHeader()},
             body: JSON.stringify(dataToSend)
 
         });
@@ -57,11 +64,5 @@ export default class ConversationsClient {
         let conversationId = conversationIdInResponse === null ? conversationToShow.id : conversationIdInResponse;
         console.log(conversationId);
         await ConversationsClient.retrieveFullConversation(conversationId, setConversationToShow);
-    }
-
-    static getCurrentUser = async (setUserName) => {
-        const response = await fetch("http://localhost:8080/api/user/currentUser");
-        const data = await response.json();
-        setUserName(data.userName);
     }
 }
