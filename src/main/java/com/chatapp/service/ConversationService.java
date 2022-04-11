@@ -1,6 +1,7 @@
 package com.chatapp.service;
 
 import com.chatapp.api.dto.ConversationDTO;
+import com.chatapp.api.dto.MessageDTO;
 import com.chatapp.api.dto.ReceivedMessageDTO;
 import com.chatapp.api.dto.UserDTO;
 import com.chatapp.storage.data.Conversation;
@@ -39,22 +40,9 @@ public class ConversationService {
 
 	public ConversationDTO getFullConversation(Long conversationId) {
 		Conversation conversation = conversationRepository.getConversationWithMessages(conversationId);
-		String lastMessage = null;
-		Date lastMessageTime = null;
-		if (conversation.getMessages().size() > 0) {
-			int lastIndex = conversation.getMessages().size() - 1;
-			lastMessage = conversation.getMessages().get(lastIndex).getContent();
-			lastMessageTime = conversation.getMessages().get(lastIndex).getTime();
-		}
-
-		return ConversationDTO.builder()
-				.id(conversation.getId())
-				.participants(UserDTO.toDTOs(conversation.getParticipants()))
-				.messages(conversation.getMessages())
-				.lastMessage(lastMessage)
-				.lastMessageTime(lastMessageTime)
-				.build();
+		return getConversationDTO(conversation, true);
 	}
+
 
 	public List<ConversationDTO> getConversationByUserName(@PathVariable String userName) {
 		List<Conversation> allByParticipantUserName = conversationRepository.findAllByParticipantUserName(userName);
@@ -97,13 +85,30 @@ public class ConversationService {
 		return conversationId;
 	}
 
-	private ConversationDTO getConversationDTO(Conversation conversation) {
-		Message message = conversation.getMessages().get(conversation.getMessages().size() - 1);
-		return new ConversationDTO(
-				conversation.getId(),
-				UserDTO.toDTOs(conversation.getParticipants()),
-				null,
-				message.getContent(),
-				message.getTime());
+	private ConversationDTO getConversationDTO (Conversation conversation) {
+		return getConversationDTO(conversation, false);
 	}
+
+	private ConversationDTO getConversationDTO (Conversation conversation, boolean setMessages) {
+		String lastMessageText = null;
+		Long lastMessageTime = null;
+		Long lastMessageFromId = null;
+		if (conversation.getMessages().size() > 0) {
+			int lastIndex = conversation.getMessages().size() - 1;
+			Message lastMessage = conversation.getMessages().get(lastIndex);
+			lastMessageText = lastMessage.getContent();
+			lastMessageTime = lastMessage.getTime().getTime();
+			lastMessageFromId = lastMessage.getSenderId();
+		}
+
+		return ConversationDTO.builder()
+				.id(conversation.getId())
+				.participants(UserDTO.toDTOs(conversation.getParticipants()))
+				.messages(setMessages ? MessageDTO.toDTOs(conversation.getMessages()) : null)
+				.lastMessage(lastMessageText)
+				.lastMessageTime(lastMessageTime)
+				.lastMessageFrom(lastMessageFromId)
+				.build();
+	}
+
 }

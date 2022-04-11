@@ -15,7 +15,7 @@ function ChatCard(props) {
 			>
 				{props.content}
 			</div>
-			<div className="message-time-style">{props.time}</div>
+			<div className="message-time-style">{new Date(props.time).toLocaleString()}</div>
 		</div>
 	);
 }

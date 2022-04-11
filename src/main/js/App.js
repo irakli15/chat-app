@@ -14,7 +14,13 @@ function App() {
     const [conversations, setConversations] = useState([]);
 
     useEffect(() => {
-        ConversationsClient.searchConversations(userName, setConversations, searchTerm);
+        ConversationsClient.checkAuth(setUserName);
+    }, []);
+
+    useEffect(() => {
+        if (userName) {
+            ConversationsClient.searchConversations(userName, setConversations, searchTerm);
+        }
     }, [searchTerm, userName]);
 
     const conversationClickHandler = (conversation) => {

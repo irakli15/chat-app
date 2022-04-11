@@ -5,7 +5,7 @@ import "./ConversationList.css";
 
 const ConversationList = (props) => {
 	console.log(props.conversationsData);
-	const currentUserName = useContext(SessionContext).currentUserName;
+	console.log(props.conversationsData);
 	return (
 		<div className="list-style">
 			{props.conversationsData.map((convData, index) => {
@@ -14,7 +14,7 @@ const ConversationList = (props) => {
 						key={index}
 						participantUserName={
 							convData.participants.filter(
-								(user) => currentUserName !== user.userName
+								(user) => convData.lastMessageFrom === user.id
 							)[0].userName
 						}
 						lastMessage={ convData.lastMessage }
