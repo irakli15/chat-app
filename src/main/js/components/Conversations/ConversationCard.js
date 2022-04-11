@@ -3,8 +3,7 @@ import React, {useContext} from "react";
 import SessionContext from "../../context/session-context";
 
 const ConversationCard = (props) => {
-	console.log(props.participantUserName)
-	const userNameToShow = props.participantUserName === useContext(SessionContext).currentUserName ?
+	const userNameToShow = props.lastMessageFrom === useContext(SessionContext).currentUserName ?
 		"You" : props.participantUserName;
 	return (
 		<div className="card-style" onClick={props.cardClickHandler}>
@@ -12,8 +11,11 @@ const ConversationCard = (props) => {
 				<div>
 					<b>{props.participantUserName}</b>
 				</div>
-				<span
-					style={{fontSize: "small", color: "grey"}}>{userNameToShow + ": " + props.lastMessage + " - " + new Date(props.lastMessageTime).toLocaleString()}</span>
+				{props.lastMessageFrom && <span
+					style={{
+						fontSize: "small",
+						color: "grey"
+					}}>{userNameToShow + ": " + props.lastMessage + " - " + new Date(props.lastMessageTime).toLocaleString()}</span>}
 			</div>
 		</div>
 	);

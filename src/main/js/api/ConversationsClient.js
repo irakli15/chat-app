@@ -17,7 +17,6 @@ export default class ConversationsClient {
 		const response = await fetch("http://localhost:8080/api/conversation/getConversationById/" + conversationId,
 			{headers: ConversationsClient.getAuthHeader()})
 		const data = await response.json();
-		console.log(data);
 		setConversationToShow(data);
 	};
 
