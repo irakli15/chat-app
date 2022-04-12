@@ -71,7 +71,7 @@ public class ConversationService {
 		return conversations;
 	}
 
-	public Long addMessageToConversation(@RequestBody ReceivedMessageDTO receivedMessage) {
+	public Message addMessageToConversation(@RequestBody ReceivedMessageDTO receivedMessage) {
 		Message message = receivedMessage.getMessage();
 		Long conversationId = receivedMessage.getMessage().getConversationId();
 		message.setTime(new Date());
@@ -79,10 +79,9 @@ public class ConversationService {
 			receivedMessage.getConversation().setMessages(new ArrayList<>());
 			Conversation savedConversation = conversationRepository.save(receivedMessage.getConversation());
 			message.setConversationId(savedConversation.getId());
-			conversationId = savedConversation.getId();
 		}
 		messageRepository.save(message);
-		return conversationId;
+		return message;
 	}
 
 	private ConversationDTO getConversationDTO (Conversation conversation) {

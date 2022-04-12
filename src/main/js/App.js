@@ -41,6 +41,7 @@ function App() {
             conversationToShow,
             setConversationToShow,
             userName,
+            conversations,
             setConversations);
     }
 

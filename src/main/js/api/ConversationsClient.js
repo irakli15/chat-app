@@ -37,6 +37,7 @@ export default class ConversationsClient {
 								conversationToShow,
 								setConversationToShow,
 								userName,
+								conversations,
 								setConversations) => {
 		const message = {
 			id: null,
@@ -57,12 +58,21 @@ export default class ConversationsClient {
 			body: JSON.stringify(dataToSend)
 
 		});
-		const conversationIdInResponse = await response.json();
-		if (!conversationToShow.id) {
+		const savedMessage = await response.json();
+
+		if (savedMessage.conversationId === conversationToShow.id) {
+			const messagesList = [...conversationToShow.messages, savedMessage];
+			setConversationToShow({...conversationToShow, messages : messagesList});
+			const updatedConversation = conversations.filter((conv) => conv.id === savedMessage.conversationId)[0];
+			updatedConversation.lastMessage = savedMessage.content;
+			updatedConversation.lastMessageTime = savedMessage.time;
+			updatedConversation.lastMessageFrom = savedMessage.senderId;
+			const updatedConversations = [updatedConversation, ...conversations.filter((conv) => conv.id !== savedMessage.conversationId)];
+			setConversations(updatedConversations)
+		} else {
+			await ConversationsClient.retrieveFullConversation(savedMessage.conversationId, setConversationToShow);
 			await this.retrieveConversations(userName, setConversations);
 		}
-		let conversationId = conversationIdInResponse === null ? conversationToShow.id : conversationIdInResponse;
-		await ConversationsClient.retrieveFullConversation(conversationId, setConversationToShow);
 	}
 
 	static checkAuth = async (setUserName) => {

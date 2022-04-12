@@ -1,6 +1,7 @@
 package com.chatapp.controllers;
 
 import com.chatapp.api.dto.ConversationDTO;
+import com.chatapp.api.dto.MessageDTO;
 import com.chatapp.api.dto.ReceivedMessageDTO;
 import com.chatapp.service.ConversationService;
 import lombok.extern.java.Log;
@@ -40,8 +41,8 @@ public class ConversationController {
 
 
 	@PutMapping("/addMessage")
-	public Long addMessageToConversation(@RequestBody ReceivedMessageDTO receivedMessage) {
-		return conversationService.addMessageToConversation(receivedMessage);
+	public MessageDTO addMessageToConversation(@RequestBody ReceivedMessageDTO receivedMessage) {
+		return MessageDTO.toDTO(conversationService.addMessageToConversation(receivedMessage));
 	}
 
 
