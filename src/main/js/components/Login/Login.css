@@ -5,10 +5,10 @@
     margin: auto;
 }
 
-.login-form.input {
+.login-form>input {
     margin-bottom: 0.2rem;
 }
 
-.login-form.button {
-    height: 3rem;
+.login-form>button {
+    height: 1.5rem;
 }
