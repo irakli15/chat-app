@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
-import "./ComposeText.css";
+import classes from "./ComposeText.module.css";
+import Button from "../General/Button/Button";
 
 const ComposeText = (props) => {
 	const messageTextRef = useRef();
@@ -20,9 +21,9 @@ const ComposeText = (props) => {
 	}
 
 	return (
-			<div className="compose-text">
-				<textarea className="compose-text-field" ref={messageTextRef} onKeyPress={onKeyPress}/>
-				<button onClick={onSendClick}>Send</button>
+			<div className={classes.compose}>
+				<textarea className={classes['text-field']} ref={messageTextRef} onKeyPress={onKeyPress}/>
+				<Button className={classes['send-button']} onClick={onSendClick}>Send</Button>
 			</div>
 	);
 };

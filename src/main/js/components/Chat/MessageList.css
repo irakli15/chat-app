@@ -1,24 +1,23 @@
 .message-list-style {
-	display: flex;
-	flex-direction: column;
-	margin: 0.2rem;
-	flex-grow: 1;
-	overflow: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 0.2rem;
+    flex: 1 1 0;
+    overflow: auto;
 }
 
 .conversation-header {
-	display: flex;
-	align-content: center;
-	font-weight: bold;
-	flex-wrap: wrap;
-	flex: 0 0 auto;
-	height: 2rem;
-	background: lightgray;
-	border-bottom: solid 1px;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    height: 2rem;
+    background: lightgray;
+    border-bottom: solid 1px;
+    padding-left: 0.4rem;
 }
 
 .messages-wrapper {
-	flex-grow: 1;
-	display: flex;
-	flex-direction: column;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }

@@ -1,11 +1,12 @@
 import "./TopBar.css"
 import React from "react";
+import Button from "../General/Button/Button";
 
 const TopBar = (props) => {
     return (
         <div className="top-bar">
             <span className="top-bar-user-name"> {props.userName} </span>
-            <button className="logout-button" onClick={props.onLogout}>Log Out</button>
+            <Button className="logout-button" onClick={props.onLogout}>Log Out</Button>
         </div>
     );
 }

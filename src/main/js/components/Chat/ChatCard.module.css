@@ -1,0 +1,42 @@
+.chat-card {
+    display: flex;
+    align-items: center;
+    width: 100%;
+	margin: 1px 0;
+}
+
+.content {
+    border-radius: 20px;
+	padding: 10px;
+    max-width: 10rem;
+    word-wrap: break-word;
+}
+
+.content-right {
+    background-color: #0366d6;
+    color: white;
+}
+
+.content-left {
+    background-color: lightgray;
+    color: black;
+}
+
+.message-time {
+    font-size: x-small;
+    text-align: right;
+    margin: 0 0.2rem;
+    opacity: 70%;
+}
+
+.chat-card-right {
+    flex-direction: row-reverse;
+}
+
+.chat-card-left {
+    justify-content: flex-start;
+}
+
+.current-user-content {
+    background-color: lightgray;
+}

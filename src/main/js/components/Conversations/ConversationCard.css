@@ -1,11 +1,25 @@
 .card-style {
-    border: 1px;
-    border-style: solid;
-    width: 100%;
     padding: 10px;
     margin-bottom: 5px;
-    background-color: lightgrey;
-    /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26); */
     border-radius: 10px;
-    box-sizing: border-box;
+}
+
+.card-style:hover {
+    background-color: lightgray;
+}
+
+.participant-name-style {
+    font-weight: bold;
+}
+
+.last-message-style {
+    font-size: small;
+    opacity: 70%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.last-message-time-style {
+    font-size: small;
+    opacity: 70%;
 }
