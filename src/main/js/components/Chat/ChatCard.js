@@ -9,7 +9,9 @@ function ChatCard(props) {
 	const contentPositionClass = "content-" + position;
 	return (
 		<div className={`${classes['chat-card']} ${classes[cardPositionClass]}`}>
-			<span className={`${classes.content} ${classes[contentPositionClass]}`}>{props.content}</span>
+			<div className={`${classes.content} ${classes[contentPositionClass]}`}>
+				<span className={`${classes.content}`}>{props.content}</span>
+			</div>
 			<span className={`${classes['message-time']} ${classes[messageTimePositionClass]}`}>{getTimeString(props.time)}</span>
 		</div>
 	);
