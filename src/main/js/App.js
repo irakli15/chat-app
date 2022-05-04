@@ -14,10 +14,6 @@ function App() {
 	const [conversations, setConversations] = useState([]);
 
 	useEffect(() => {
-		ConversationsClient.checkAuth(setUserName);
-	}, []);
-
-	useEffect(() => {
 		if (userName) {
 			ConversationsClient.searchConversations(userName, setConversations, searchTerm);
 		}
@@ -53,18 +49,7 @@ function App() {
 	};
 
 	const logInHandler = async (userName, password) => {
-		const credentials = btoa(userName + ":" + password);
-		const response = await fetch("http://localhost:8080/token",
-			{
-				method: "POST",
-				headers: {"Authorization": `Basic ${credentials}`}
-			});
-		if (response.status === 200) {
-			const jwtToken = await response.text();
-			localStorage.setItem("currentUserName", userName);
-			localStorage.setItem("jwtToken", jwtToken);
-			setUserName(userName);
-		}
+		await ConversationsClient.logIn(userName, password, setUserName);
 	}
 
 	const searchHandler = (event) => {

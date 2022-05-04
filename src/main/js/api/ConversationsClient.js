@@ -78,11 +78,26 @@ export default class ConversationsClient {
 	static checkAuth = async (setUserName) => {
 		const response = await fetch("http://localhost:8080/api/user/currentUser", {
 			headers: ConversationsClient.getAuthHeader()
-		})
+		});
 		if (response.status === 401) {
 			setUserName(null);
 			localStorage.removeItem("currentUserName");
 			localStorage.removeItem("jwtToken");
+		}
+	}
+	//TODO: maybe set timer according to token to automatically log out
+	static logIn = async (userName, password, setUserName) => {
+		const credentials = btoa(userName + ":" + password);
+		const response = await fetch("http://localhost:8080/token",
+			{
+				method: "POST",
+				headers: {"Authorization": `Basic ${credentials}`}
+			});
+		if (response.status === 200) {
+			const jwtToken = await response.text();
+			localStorage.setItem("currentUserName", userName);
+			localStorage.setItem("jwtToken", jwtToken);
+			setUserName(userName);
 		}
 	}
 }
